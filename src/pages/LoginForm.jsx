@@ -1,70 +1,48 @@
-// ReactとそのuseStateフックをインポート
 import React, { useState } from 'react';
-import './loginForm.css';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useCookies } from 'react-cookie';
 
-// LoginFormという関数コンポーネントを定義
 function LoginForm() {
-  // email, password, emailError, submitSuccessという名前のstateを作成
-  // メールアドレス、パスワード、メールアドレスのエラーメッセージ、送信成功フラグを管理
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [apiError, setApiError] = useState(null);
+  const [cookies, setCookie] = useCookies(['token']);
+  const navigate = useNavigate();
 
-  // メールアドレスのバリデーションを行う関数を定義
-  const validateEmail = (email) => {
-    // メールアドレスの形式を検証する正規表現を定義
-    // @より前の部分に特殊文字を含まないかどうか、@より後の部分にドメイン名が含まれているかどうかを確認
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // メールアドレスが正規表現にマッチするかどうかを返す
-    return re.test(String(email).toLowerCase());
-  }
-
-  // フォームの送信を処理する関数を定義
-  const handleSubmit = (event) => {
-    // フォームのデフォルトの送信動作をキャンセル
-    event.preventDefault();
-    // エラーメッセージと成功メッセージをリセット
-    setEmailError('');
-    setSubmitSuccess(false);
-    // メールアドレスが無効な場合、エラーメッセージを設定して処理を終了
-    if (!validateEmail(email)) {
-      setEmailError('Invalid email address');
-      return;
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post('https://railway.bookreview.techtrain.dev/signin', data);
+      if (response.status === 200) {
+        setCookie('token', response.data.token, { path: '/' });
+        navigate('/books');
+      }
+    } catch (error) {
+      setApiError(error.message);
     }
-    // メールアドレスとパスワードをログに出力
-    console.log(`Email: ${email}, Password: ${password}`);
-    // 送信が成功したら、submitSuccessをtrueに設定
-    setSubmitSuccess(true);
   };
 
-// LoginFormコンポーネントのUIを返す
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="email">Email</label>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center w-full max-w-md mx-auto p-5 shadow-md rounded-md">
+      {apiError && <div className="text-red-500 mb-3">{apiError}</div>}
       <input
-        id="email"
+        {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
         type="email"
-        name="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)} // 入力が変更されたときに、emailのstateを更新
+        placeholder="メールアドレス"
+        className="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
       />
-      {/* emailErrorが存在する場合、エラーメッセージを表示 */}
-      {emailError && <div className="error-message">{emailError}</div>}
-      <label htmlFor="password">Password</label>
+      {errors.email && <div className="text-red-500 mb-3">メールアドレスの形式が正しくありません。</div>}
       <input
-        id="password"
+        {...register("password", { required: true, minLength: 6 })}
         type="password"
-        name="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)} // 入力が変更されたときに、passwordのstateを更新
+        placeholder="パスワード"
+        className="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
       />
-      <button type="submit">Submit</button>
-      {/* submitSuccessがtrueの場合、"success"と表示 */}
-      {submitSuccess && <div className="success-message">Success</div>}
+      {errors.password && <div className="text-red-500 mb-3">パスワードは6文字以上としてください。</div>}
+      <button type="submit" className="px-5 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-colors duration-300 hover:bg-blue-700">ログイン</button>
+      <Link to="/signup" className="text-blue-500 hover:underline">新規会員登録はこちら</Link>
     </form>
   );
 }
 
-// LoginFormコンポーネントをエクスポート
 export default LoginForm;
