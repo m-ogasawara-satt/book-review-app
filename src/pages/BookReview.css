@@ -1,0 +1,53 @@
+.book-review {
+  padding: 1rem;
+}
+
+.book-review__title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.book-review__item {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 0.25rem;
+}
+
+.book-review__item-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.book-review__item-detail {
+  margin-top: 0.5rem;
+}
+
+.book-review__item-label {
+  font-weight: bold;
+}
+
+.book-review__controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.book-review__control {
+  padding: 0.5rem 1rem;
+  background-color: #4299e1;
+  color: white;
+  border-radius: 0.25rem;
+}
+
+.book-review__control:hover {
+  background-color: #2b6cb0;
+}
+
+.book-review__control--back {
+  /* Back button specific styles */
+}
+
+.book-review__control--next {
+  /* Next button specific styles */
+}
