@@ -51,3 +51,33 @@
 .book-review__control--next {
   /* Next button specific styles */
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.book-review__pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.book-review__pagination-item {
+  margin: 0 5px;
+}
+
+.book-review__pagination-item--active {
+  font-weight: bold;
+  color: red;
+  border-radius: 50%;
+  padding: 0 10px;
+  background-color: #eee;
+}
