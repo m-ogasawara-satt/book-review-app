@@ -46,8 +46,8 @@ const BookReview = () => {
         </div>
       ))}
       <ReactPaginate
-        previousLabel={'Back'}
-        nextLabel={hasMore ? 'Next' : ''}
+        previousLabel={'戻る'}
+        nextLabel={hasMore ? '次へ' : ''}
         breakLabel={'...'}
         pageClassName={'book-review__pagination-item'}
         pageCount={hasMore ? pageNumber + 2 : pageNumber + 1}

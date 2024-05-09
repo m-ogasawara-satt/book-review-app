@@ -44,14 +44,6 @@
   background-color: #2b6cb0;
 }
 
-.book-review__control--back {
-  /* Back button specific styles */
-}
-
-.book-review__control--next {
-  /* Next button specific styles */
-}
-
 .pagination {
   display: flex;
   justify-content: center;
