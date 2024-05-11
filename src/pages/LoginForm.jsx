@@ -4,6 +4,28 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
 
+// Input component
+function Input({ register, errors, type, placeholder, name, validation }) {
+  return (
+    <div className="input-field">
+      <input
+        {...register(name, validation)}
+        type={type}
+        placeholder={placeholder}
+        className="input"
+      />
+      {errors[name] && <div className="error">{errors[name].message}</div>}
+    </div>
+  );
+}
+
+// Button component
+function Button({ children, type }) {
+  return (
+    <button type={type} className="btn">{children}</button>
+  );
+}
+
 function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [apiError, setApiError] = useState(null);
@@ -23,24 +45,26 @@ function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center w-full max-w-md mx-auto p-5 shadow-md rounded-md">
-      {apiError && <div className="text-red-500 mb-3">{apiError}</div>}
-      <input
-        {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+    <form onSubmit={handleSubmit(onSubmit)} className="form">
+      {apiError && <div className="error">{apiError}</div>}
+      <Input
+        register={register}
+        errors={errors}
         type="email"
         placeholder="メールアドレス"
-        className="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+        name="email"
+        validation={{ required: true, pattern: /^\S+@\S+$/i }}
       />
-      {errors.email && <div className="text-red-500 mb-3">メールアドレスの形式が正しくありません。</div>}
-      <input
-        {...register("password", { required: true, minLength: 6 })}
+      <Input
+        register={register}
+        errors={errors}
         type="password"
         placeholder="パスワード"
-        className="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+        name="password"
+        validation={{ required: true, minLength: 6 }}
       />
-      {errors.password && <div className="text-red-500 mb-3">パスワードは6文字以上としてください。</div>}
-      <button type="submit" className="px-5 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-colors duration-300 hover:bg-blue-700">ログイン</button>
-      <Link to="/signup" className="text-blue-500 hover:underline">新規会員登録はこちら</Link>
+      <Button type="submit">ログイン</Button>
+      <Link to="/signup" className="link">新規会員登録はこちら</Link>
     </form>
   );
 }

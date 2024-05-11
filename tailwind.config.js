@@ -1,10 +1,24 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content:[
-    "./src/pages/*.jsx",
-],
   theme: {
+    extend: {
+      colors: {
+        'custom-blue': '#1DA1F2',
+        'custom-red': '#E0245E',
+        'custom-green': '#17BF63',
+        'custom-yellow': '#FFAD1F',
+      },
+      backgroundColor: theme => ({
+        ...theme('colors'),
+        'primary': '#3490dc',
+        'secondary': '#ffed4a',
+        'danger': '#e3342f',
+      })
+    },
+  },
+  variants: {
     extend: {},
   },
   plugins: [],
+  purge: [],
+  darkMode: false, // or 'media' or 'class'
 }
