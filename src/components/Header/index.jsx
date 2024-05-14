@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 function Header() {
-    const navigate = useNavigate(); // Define navigate here
+    const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
     const [username, setUsername] = useState('');
     const [cookies] = useCookies(['token']);
@@ -25,7 +25,7 @@ function Header() {
   
     useEffect(() => {
       const token = cookies['token'];
-      if (token) {
+      if (isLoggedIn && token) {
         axios.get('https://railway.bookreview.techtrain.dev/users', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ function Header() {
           console.error('Error:', error);
         });
       }
-    }, [cookies]);
+    }, [cookies, isLoggedIn]);
   
     return (
       <header>

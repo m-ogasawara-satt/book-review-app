@@ -2,8 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-function LogoutButton({ setIsLoggedIn, setUsername }) {
-  const [removeCookie] = useCookies(['token']);
+function LogoutButton({ setIsLoggedIn, setUsername, removeCookie }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {

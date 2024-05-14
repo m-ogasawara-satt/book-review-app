@@ -5,8 +5,8 @@ import { useCookies } from 'react-cookie';
 import LoginForm from './pages/LoginForm';
 import SignupForm from './pages/SignupForm';
 import BookReview from './pages/BookReview';
-import Header from './components/Header'; // Import Header component
-import LogoutButton from './components/LogoutButton'; // Import LogoutButton component
+import Header from './components/Header';
+import LogoutButton from './components/LogoutButton';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
@@ -19,14 +19,14 @@ function App() {
     const token = cookies['token'];
     if (token) {
       setIsLoggedIn(true);
-      localStorage.setItem('isLoggedIn', 'true'); // Set isLoggedIn to localStorage
+      localStorage.setItem('isLoggedIn', 'true');
       axios.get('https://railway.bookreview.techtrain.dev/users', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        setUsername(response.data.username); // Set username
+        setUsername(response.data.username);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -51,7 +51,7 @@ function App() {
         <Route path="/" element={<BookReview />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      {isLoggedIn && <LogoutButton setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />}
+      {isLoggedIn && <LogoutButton setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} removeCookie={removeCookie} />}
     </>
   );
 }
