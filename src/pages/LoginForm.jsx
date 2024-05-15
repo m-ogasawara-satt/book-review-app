@@ -1,10 +1,11 @@
+// 必要なモジュールとコンポーネントをインポート
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
 
-// Input component
+
 function Input({ register, errors, type, placeholder, name, validation }) {
   return (
     <div className="input-field">
@@ -27,19 +28,25 @@ function Button({ children, type }) {
 }
 
 function LoginForm() {
+  // registerは、input要素にReact Hook Formを適用するための関数、handleSubmitはフォームの送信時に実行される関数、formStateはフォームの状態を管理するオブジェクト
   const { register, handleSubmit, formState: { errors } } = useForm();
+  // useStateフックを使用して、apiErrorのstateとその更新関数を定義
   const [apiError, setApiError] = useState(null);
-  const [cookies, setCookie] = useCookies(['token']);
+  // useCookiesフックを使用して、cookiesのstateとその更新関数を定義
+  const [setCookie] = useCookies(['token']);
+  // useNavigateフックを使用して、navigate関数を取得
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.post('https://railway.bookreview.techtrain.dev/signin', data);
+      // レスポンスのステータスコードが200である場合、cookieにトークンを保存し、/booksページに遷移
       if (response.status === 200) {
         setCookie('token', response.data.token, { path: '/' });
         navigate('/books');
       }
     } catch (error) {
+      // エラーが発生した場合、apiErrorのstateを更新
       setApiError(error.message);
     }
   };
