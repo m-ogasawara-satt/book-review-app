@@ -24,7 +24,6 @@ const BookReview = () => {
         });
         setBooks(response.data);
         setHasMore(response.data.length === booksPerPage);
-        console.log(response.data)
       } catch (error) {
         console.error(error);
       }
