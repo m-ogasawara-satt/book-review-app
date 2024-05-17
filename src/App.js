@@ -6,12 +6,13 @@ import { useCookies } from 'react-cookie';
 import LoginForm from './pages/LoginForm';
 import SignupForm from './pages/SignupForm';
 import BookReview from './pages/BookReview';
+import LogoutButton from './components/LogoutButton';
 
 function App() {
   // ログイン状態を管理するためのステートを定義
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
   // トークンを管理するためのステートを定義
-  const [cookies] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   // 現在のURLを取得
   const location = useLocation();
   // ページ遷移のための関数を取得
@@ -36,12 +37,14 @@ function App() {
     }
   }, [cookies]);
 
+
   // ログイン状態が変更されたとき、またはURLが変更されたときに、ログインページまたはサインアップページにいる場合はホームページにリダイレクト
   useEffect(() => {
-    if (isLoggedIn && (location.pathname === '/login' || location.pathname === '/signup')) {
+    const token = cookies['token'];
+    if (token && (location.pathname === '/login' || location.pathname === '/signup')) {
       navigate('/');
     }
-  }, [isLoggedIn, location, navigate]);
+  }, [cookies, location, navigate]);
 
   // ヘッダーとルーティングを設定し、ログイン状態に応じてログアウトボタンを表示
   return (
@@ -52,6 +55,8 @@ function App() {
         <Route path="/" element={<BookReview />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
+      {/* {cookies['token'] && <LogoutButton setUsername={setUsername} removeCookie={removeCookie} />} トークンが存在する場合にログアウトボタンを表示 */}
+      {cookies['token'] && <LogoutButton removeCookie={removeCookie} />} {/* トークンが存在する場合にログアウトボタンを表示 */}
     </>
   );
 }

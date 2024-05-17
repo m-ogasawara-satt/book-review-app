@@ -1,20 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 
-function LogoutButton({ setIsLoggedIn, setUsername, removeCookie }) {
+// function LogoutButton({ setUsername, removeCookie }) {
+function LogoutButton({ removeCookie }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     removeCookie('token');
-    localStorage.setItem('isLoggedIn', 'false');
-    setIsLoggedIn(false);
-    setUsername('');
-    navigate('/');
+    // setUsername('');
+    navigate('/login');
   };
 
   return (
-    <button onClick={handleLogout}>サインアウト</button>
+    <button onClick={handleLogout}>ログアウト</button>
   );
 }
 
