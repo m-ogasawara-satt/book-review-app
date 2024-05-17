@@ -33,7 +33,7 @@ function LoginForm() {
   // useStateフックを使用して、apiErrorのstateとその更新関数を定義
   const [apiError, setApiError] = useState(null);
   // useCookiesフックを使用して、cookiesのstateとその更新関数を定義
-  const [setCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   // useNavigateフックを使用して、navigate関数を取得
   const navigate = useNavigate();
 

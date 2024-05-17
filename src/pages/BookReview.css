@@ -44,17 +44,6 @@
   background-color: #2b6cb0;
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-}
-
-.pagination li {
-  margin: 0 5px;
-}
-
 .book-review__pagination {
   display: flex;
   justify-content: center;
@@ -62,7 +51,7 @@
   padding: 0;
 }
 
-.book-review__pagination-item {
+.book-review__pagination-pages, .book-review__pagination-item {
   margin: 0 5px;
 }
 
