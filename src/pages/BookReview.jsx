@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import './BookReview.css';
-import Pagination from '../components/Pagination';
+import Header from '../components/Header/index';
+import Pagination from '../components/Pagination/index';
 
 const BookReview = () => {
   const [books, setBooks] = useState([]);
@@ -38,7 +38,7 @@ const BookReview = () => {
   };
   return (
     <div className="book-review">
-      <h1 className="book-review__title">Book Review</h1>
+      <Header />
       {books.map((book) => (
         <div key={book.id} className="book-review__item">
           <h2 className="book-review__item-title">{book.title}</h2>

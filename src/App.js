@@ -6,11 +6,11 @@ import { useCookies } from 'react-cookie';
 import LoginForm from './pages/LoginForm';
 import SignupForm from './pages/SignupForm';
 import BookReview from './pages/BookReview';
-import LogoutButton from './components/LogoutButton';
+import Profile from './components/profile/index';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  // ログイン状態を管理するためのステートを定義
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
   // トークンを管理するためのステートを定義
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
   // 現在のURLを取得
@@ -22,8 +22,6 @@ function App() {
   useEffect(() => {
     const token = cookies['token'];
     if (token) {
-      setIsLoggedIn(true);
-      localStorage.setItem('isLoggedIn', 'true');
       axios.get('https://railway.bookreview.techtrain.dev/users', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,14 +47,14 @@ function App() {
   // ヘッダーとルーティングを設定し、ログイン状態に応じてログアウトボタンを表示
   return (
     <>
+      <ToastContainer />
       <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/" element={<BookReview />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
-      {/* {cookies['token'] && <LogoutButton setUsername={setUsername} removeCookie={removeCookie} />} トークンが存在する場合にログアウトボタンを表示 */}
-      {cookies['token'] && <LogoutButton removeCookie={removeCookie} />} {/* トークンが存在する場合にログアウトボタンを表示 */}
     </>
   );
 }

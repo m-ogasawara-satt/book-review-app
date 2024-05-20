@@ -68,7 +68,7 @@ function SignupForm() {
           const uploadResponse = await axios.post('https://railway.bookreview.techtrain.dev/uploads', formData, config);
           if (uploadResponse.status === 200) {
             alert('アイコンのアップロードが完了しました。');
-            navigate('/login');
+            navigate('/');
           }
         } catch (uploadError) {
           console.error('アイコンのアップロードに失敗しました。:', uploadError.message);
