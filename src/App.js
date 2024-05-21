@@ -7,6 +7,7 @@ import LoginForm from './pages/LoginForm';
 import SignupForm from './pages/SignupForm';
 import BookReview from './pages/BookReview';
 import Profile from './components/profile/index';
+import NewBookReview from './components/NewBookReview/index';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -53,6 +54,7 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/" element={<BookReview />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/new" element={<NewBookReview />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </>

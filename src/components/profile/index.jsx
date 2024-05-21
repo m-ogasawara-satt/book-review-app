@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Header from '../Header';
 
 function Profile() {
   const [username, setUsername] = useState('');
@@ -42,12 +43,11 @@ function Profile() {
       { headers: { Authorization: `Bearer ${token}` } }
     )
     .then((response) => {
-      console.log(response);
       toast.success('アップデート完了。レビュー一覧画面へ遷移します。', {
         style: {
           fontSize: "12px",
         },
-        autoClose: 5000,
+        autoClose: 3000,
         onClose: () => navigate('/')
       });
     })
@@ -58,21 +58,24 @@ function Profile() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">プロフィール編集</h1>
-      {iconUrl && <img className="w-24 h-24 rounded-full mb-4" src={iconUrl} alt="User icon" />}
-      <input 
-        className="mb-4 px-3 py-2 border border-gray-300 rounded"
-        type="text" 
-        value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
-      />
-      <button 
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        onClick={handleUpdate}
-      >
-        アップデート
-      </button>
+    <div>
+    <Header />
+      <div className="flex flex-col items-center min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">プロフィール編集</h1>
+        {iconUrl && <img className="w-24 h-24 rounded-full mb-4" src={iconUrl} alt="User icon" />}
+        <input 
+          className="mb-4 px-3 py-2 border border-gray-300 rounded"
+          type="text" 
+          value={username} 
+          onChange={(e) => setUsername(e.target.value)} 
+        />
+        <button 
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          onClick={handleUpdate}
+        >
+          アップデート
+        </button>
+      </div>
     </div>
   );
 }

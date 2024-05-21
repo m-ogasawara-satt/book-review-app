@@ -33,12 +33,12 @@ function Header() {
 
   return (
     <header className="p-4 bg-blue-500 text-white flex justify-between items-center mb-4">
-      <h1 className="text-lg font-bold">Book Review</h1>
+      <Link to="/" className="text-lg font-bold">Book Review</Link>
       {username ? (
         <div className="flex items-center">
-          <span className="mr-2">User:</span>
+          <span className="mr-2">ユーザー名:</span>
           <span className="font-medium mr-4">{username}</span>
-          <Link to="/profile">Edit Profile</Link>
+          <Link to="/profile" className="mr-4">プロフィール編集</Link>
           <LogoutButton removeCookie={removeCookie} />
         </div>
       ) : (
