@@ -1,27 +1,24 @@
-// 必要なモジュールをインポート
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import LoginForm from './pages/LoginForm';
 import SignupForm from './pages/SignupForm';
 import BookReview from './pages/BookReview';
+import BookDetail from './pages/BookDetail';
+import EditBookReview from './pages/EditBookReview';
 import Profile from './components/profile/index';
 import NewBookReview from './components/NewBookReview/index';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from './recoilAtoms';
 
 function App() {
-  // トークンを管理するためのステートを定義
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
-  // 現在のURLを取得
+  const token = useRecoilValue(tokenState);
   const location = useLocation();
-  // ページ遷移のための関数を取得
   const navigate = useNavigate();
 
-  // トークンが存在する場合はユーザー情報を取得し、ログイン状態を更新
   useEffect(() => {
-    const token = cookies['token'];
     if (token) {
       axios.get('https://railway.bookreview.techtrain.dev/users', {
         headers: {
@@ -34,18 +31,14 @@ function App() {
     } else {
       console.log('トークン情報がありません');
     }
-  }, [cookies]);
+  }, [token]);
 
-
-  // ログイン状態が変更されたとき、またはURLが変更されたときに、ログインページまたはサインアップページにいる場合はホームページにリダイレクト
   useEffect(() => {
-    const token = cookies['token'];
     if (token && (location.pathname === '/login' || location.pathname === '/signup')) {
       navigate('/');
     }
-  }, [cookies, location, navigate]);
+  }, [token, location, navigate]);
 
-  // ヘッダーとルーティングを設定し、ログイン状態に応じてログアウトボタンを表示
   return (
     <>
       <ToastContainer />
@@ -55,6 +48,8 @@ function App() {
         <Route path="/" element={<BookReview />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/new" element={<NewBookReview />} />
+        <Route path="/detail/:id" element={<BookDetail />} />
+        <Route path="/edit/:id" element={<EditBookReview />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </>

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import LogoutButton from '../LogoutButton/index';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '../../recoilAtoms';
 
 function Header() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
-  const [cookies, removeCookie, setCookie] = useCookies(['token']);
+  const token = useRecoilValue(tokenState);
 
   useEffect(() => {
-    const token = cookies['token'];
     if (token) {
       axios.get('https://railway.bookreview.techtrain.dev/users', {
         headers: {
@@ -23,14 +23,15 @@ function Header() {
       })
       .catch((error) => {
         console.error('Error:', error);
-        removeCookie('token');
         setUsername('');
       });
     } else {
       setUsername('');
     }
-  }, [cookies]);
+  }, [token]);
 
+  // ログイン判定はtokenの有無で行う
+  // ユーザー名や認証tokenはグローバルステートに保存する
   return (
     <header className="p-4 bg-blue-500 text-white flex justify-between items-center mb-4">
       <Link to="/" className="text-lg font-bold">Book Review</Link>
@@ -39,7 +40,8 @@ function Header() {
           <span className="mr-2">ユーザー名:</span>
           <span className="font-medium mr-4">{username}</span>
           <Link to="/profile" className="mr-4">プロフィール編集</Link>
-          <LogoutButton removeCookie={removeCookie} />
+          <Link to="/new" className="mr-4">新規レビュー作成</Link>
+          <LogoutButton />
         </div>
       ) : (
         <button 
